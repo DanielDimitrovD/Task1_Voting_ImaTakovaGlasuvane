@@ -81,25 +81,52 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-        [self showAlertView];
+    [self showAlertView:tableView];
     }
 
 
-- (void) showAlertView {
+- (void) showAlertView:(UITableView *)tableView {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Legal voting confirmation"
                                            message:@"Confirm that you are atleast 18 years old to vote!"
                                            preferredStyle:UIAlertControllerStyleAlert];
     
             UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Acept" style:UIAlertActionStyleDefault
-               handler:^(UIAlertAction *action) {}];
+               handler:^(UIAlertAction *action) {
+                
+                int imaTakuvNarodIndexInPartiesArray = 28;
+                NSIndexPath *imaTakuvNarodIndexPath = [NSIndexPath indexPathForItem:imaTakuvNarodIndexInPartiesArray inSection:0];
+                
+                /**
+                 #Warning the highlighting of the specific cell will not work if animated argument is YES
+                 */
+                
+                [tableView scrollToRowAtIndexPath:imaTakuvNarodIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                
+                NSArray<NSIndexPath*> *visibleRows = [tableView indexPathsForVisibleRows];
+                
+                for (NSIndexPath *indexPath in visibleRows) {
+                    
+                    VotingTableViewCell *currentCell = [tableView cellForRowAtIndexPath:indexPath];
+                    
+                    NSString* imaTakuvNarodPartyName = @"Има такъв народ";
+                    
+                    if ([currentCell.partyName.text  isEqual:imaTakuvNarodPartyName]) {
+                        [currentCell setHighlighted:YES animated:YES];
+                        break;
+                    }
+                }
+            }];
     
-            UIAlertAction *declineAction = [UIAlertAction actionWithTitle:@"Decline" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+            UIAlertAction *declineAction = [UIAlertAction actionWithTitle:@"Decline" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                exit(0);
+            }];
     
             [alert addAction:acceptAction];
             [alert addAction:declineAction];
    
             [self presentViewController:alert animated:YES completion:nil];
 }
+
 
 /*
 // Override to support conditional editing of the table view.
