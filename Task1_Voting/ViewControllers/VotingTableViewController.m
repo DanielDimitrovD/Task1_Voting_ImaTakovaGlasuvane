@@ -12,6 +12,7 @@
 @interface VotingTableViewController ()
 @property(strong, nonatomic) NSMutableArray<Party*> *partiesArray;
 @property(strong, nonatomic) NSUserDefaults *votingDefaults;
+@property(strong, nonatomic) UISelectionFeedbackGenerator *selectionFeedbackGenerator;
 @end
 
 @implementation VotingTableViewController
@@ -60,6 +61,8 @@
     
     [self initVotingDefaults];
     
+    self.selectionFeedbackGenerator = [[UISelectionFeedbackGenerator alloc] init];
+    [self.selectionFeedbackGenerator prepare];
 }
 
 - (void)initVotingDefaults {
@@ -141,6 +144,9 @@
                         
                         [tableView deselectRowAtIndexPath:selectedRowIndexPath animated:NO];
                         [self scrollToImaTakuvNarod:tableView];
+                        
+                        [self.selectionFeedbackGenerator selectionChanged];
+                        
                     } else {
                         
                         float chanceForDirectVote = ((double) arc4random() / UINT32_MAX);
@@ -188,19 +194,27 @@
     
     [tableView scrollToRowAtIndexPath:imaTakuvNarodIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
     
-    NSArray<NSIndexPath*> *visibleRows = [tableView indexPathsForVisibleRows];
+    VotingTableViewCell *imaTakuvNarodCell = [tableView cellForRowAtIndexPath:imaTakuvNarodIndexPath];
     
-    for (NSIndexPath *indexPath in visibleRows) {
-        
-        VotingTableViewCell *currentCell = [tableView cellForRowAtIndexPath:indexPath];
-        
-        NSString* imaTakuvNarodPartyName = @"Има такъв народ";
-        
-        if ([currentCell.partyName.text  isEqual:imaTakuvNarodPartyName]) {
-            [currentCell setHighlighted:YES animated:YES];
-            break;
-        }
-    }
+    [imaTakuvNarodCell blink];
+    
+    // Programatical way to get the cell of party ImaTakuvNarod if you don't know it's position
+    
+//    NSArray<NSIndexPath*> *visibleRows = [tableView indexPathsForVisibleRows];
+//
+//    for (NSIndexPath *indexPath in visibleRows) {
+//
+//        VotingTableViewCell *currentCell = [tableView cellForRowAtIndexPath:indexPath];
+//
+//        NSString* imaTakuvNarodPartyName = @"Има такъв народ";
+//
+//        if ([currentCell.partyName.text  isEqual:imaTakuvNarodPartyName]) {
+//
+//            [currentCell blink];
+//
+//            break;
+//        }
+//    }
 }
 
 - (void) addVoteToParty:(NSString*)partyName {
