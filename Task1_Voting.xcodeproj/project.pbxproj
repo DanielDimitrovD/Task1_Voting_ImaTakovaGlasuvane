@@ -14,9 +14,9 @@
 		8EB804692626CC49006E371B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EB804672626CC49006E371B /* LaunchScreen.storyboard */; };
 		8EB8046C2626CC49006E371B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB8046B2626CC49006E371B /* main.m */; };
 		8EB804762626CD1E006E371B /* Party.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB804742626CD1E006E371B /* Party.m */; };
-		8EB8047B2626CD5C006E371B /* VotingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB804792626CD5C006E371B /* VotingTableViewController.m */; };
 		8EB804832626CE9E006E371B /* VotingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB804822626CE9E006E371B /* VotingTableViewCell.m */; };
 		8EB804882626CF0D006E371B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EB804862626CF0D006E371B /* Main.storyboard */; };
+		8EB8048D2626D230006E371B /* VotingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB8048C2626D230006E371B /* VotingTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,11 +33,11 @@
 		8EB8046B2626CC49006E371B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8EB804742626CD1E006E371B /* Party.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Party.m; path = ../../../Task1/Task1/ImaTakovaGlasuvane/ImaTakovaGlasuvane/ImaTakovaGlasuvane/Models/Party.m; sourceTree = "<group>"; };
 		8EB804752626CD1E006E371B /* Party.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Party.h; path = ../../../Task1/Task1/ImaTakovaGlasuvane/ImaTakovaGlasuvane/ImaTakovaGlasuvane/Models/Party.h; sourceTree = "<group>"; };
-		8EB804792626CD5C006E371B /* VotingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VotingTableViewController.m; path = ../../../Task1/Task1/ImaTakovaGlasuvane/ImaTakovaGlasuvane/ImaTakovaGlasuvane/ViewControllers/VotingTableViewController.m; sourceTree = "<group>"; };
-		8EB8047A2626CD5C006E371B /* VotingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VotingTableViewController.h; path = ../../../Task1/Task1/ImaTakovaGlasuvane/ImaTakovaGlasuvane/ImaTakovaGlasuvane/ViewControllers/VotingTableViewController.h; sourceTree = "<group>"; };
 		8EB804812626CE9E006E371B /* VotingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VotingTableViewCell.h; path = ../../../../ImaTakovaGlasuvane/ImaTakovaGlasuvane/ImaTakovaGlasuvane/Cells/VotingTableViewCell.h; sourceTree = "<group>"; };
 		8EB804822626CE9E006E371B /* VotingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VotingTableViewCell.m; path = ../../../../ImaTakovaGlasuvane/ImaTakovaGlasuvane/ImaTakovaGlasuvane/Cells/VotingTableViewCell.m; sourceTree = "<group>"; };
 		8EB804872626CF0D006E371B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../../ImaTakovaGlasuvane/ImaTakovaGlasuvane/ImaTakovaGlasuvane/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8EB8048B2626D222006E371B /* VotingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingTableViewController.h; sourceTree = "<group>"; };
+		8EB8048C2626D230006E371B /* VotingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VotingTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +99,9 @@
 		8EB804782626CD36006E371B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				8EB8048C2626D230006E371B /* VotingTableViewController.m */,
+				8EB8048B2626D222006E371B /* VotingTableViewController.h */,
 				8EB8047D2626CD62006E371B /* Cells */,
-				8EB8047A2626CD5C006E371B /* VotingTableViewController.h */,
-				8EB804792626CD5C006E371B /* VotingTableViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -189,8 +189,8 @@
 				8EB8045B2626CC48006E371B /* AppDelegate.m in Sources */,
 				8EB8046C2626CC49006E371B /* main.m in Sources */,
 				8EB8045E2626CC48006E371B /* SceneDelegate.m in Sources */,
-				8EB8047B2626CD5C006E371B /* VotingTableViewController.m in Sources */,
 				8EB804762626CD1E006E371B /* Party.m in Sources */,
+				8EB8048D2626D230006E371B /* VotingTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
