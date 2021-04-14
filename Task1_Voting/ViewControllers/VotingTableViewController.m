@@ -11,6 +11,7 @@
 
 @interface VotingTableViewController ()
 @property(strong, nonatomic) NSMutableArray<Party*> *partiesArray;
+@property(strong, nonatomic) NSUserDefaults * votingDefaults;
 @end
 
 @implementation VotingTableViewController
@@ -56,6 +57,20 @@
         Party* p = [Party partyWithName:partiesNames[i] imageName: [NSString stringWithFormat:@"%d", i + 1] andNumber:i + 1];
         [self.partiesArray addObject:p];
     }
+    
+    self.votingDefaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *partyName = @"Има такъв народ";
+    
+    id partyVotingCounts = [self.votingDefaults objectForKey:partyName ];
+    
+    if (partyVotingCounts == nil) {
+        // initialize NSUserDefaults
+        
+        for (int i = 0; i < partiesNames.count; i++) {
+            [self.votingDefaults setInteger:0 forKey:partiesNames[i]];
+        }
+    }
 }
 
 #pragma mark - Table view data source
@@ -76,7 +91,11 @@
     cell.partyImage.image = currentParty.image;
     cell.partyNumber.text = [NSString stringWithFormat:@"%d", currentParty.number];
     cell.partyName.text = currentParty.name;
-        
+    
+    NSInteger currentPartyVotesCount = [self.votingDefaults integerForKey:currentParty.name];
+    
+    cell.partyVotes.text = [NSString stringWithFormat:@"%ld", currentPartyVotesCount];
+    
     return cell;
 }
 
@@ -107,6 +126,8 @@
                     
                     // scroll directly to ImaTakuvNarod
                     if (chanceForHighlight < 0.25) {
+                        
+                        [tableView deselectRowAtIndexPath:selectedRowIndexPath animated:NO];
                         [self scrollToImaTakuvNarod:tableView];
                     } else {
                         
