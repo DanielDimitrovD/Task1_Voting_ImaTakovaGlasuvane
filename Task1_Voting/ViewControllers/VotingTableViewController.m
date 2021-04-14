@@ -93,26 +93,23 @@
             UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Acept" style:UIAlertActionStyleDefault
                handler:^(UIAlertAction *action) {
                 
-                int imaTakuvNarodIndexInPartiesArray = 28;
-                NSIndexPath *imaTakuvNarodIndexPath = [NSIndexPath indexPathForItem:imaTakuvNarodIndexInPartiesArray inSection:0];
+                float chance = (float)rand() / RAND_MAX;
+                NSLog(@"Chance for a gamble: %.2f", chance);
                 
-                /**
-                 #Warning the highlighting of the specific cell will not work if animated argument is YES
-                 */
+                NSIndexPath *selectedRowIndexPath = [tableView indexPathForSelectedRow];
                 
-                [tableView scrollToRowAtIndexPath:imaTakuvNarodIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                VotingTableViewCell *selectedVotingCell = [tableView cellForRowAtIndexPath:selectedRowIndexPath];
                 
-                NSArray<NSIndexPath*> *visibleRows = [tableView indexPathsForVisibleRows];
+                NSString* selectedVotingPartyName = selectedVotingCell.partyName.text;
                 
-                for (NSIndexPath *indexPath in visibleRows) {
+                // if the selected party is not ImaTakuvNarod
+                if (![selectedVotingPartyName isEqual:@"Има такъв народ"]) {
                     
-                    VotingTableViewCell *currentCell = [tableView cellForRowAtIndexPath:indexPath];
-                    
-                    NSString* imaTakuvNarodPartyName = @"Има такъв народ";
-                    
-                    if ([currentCell.partyName.text  isEqual:imaTakuvNarodPartyName]) {
-                        [currentCell setHighlighted:YES animated:YES];
-                        break;
+                    // scroll directly to ImaTakuvNarod
+                    if (chance < 0.25) {
+                        [self scrollToImaTakuvNarod:tableView];
+                    } else {
+                        NSLog(@"To DO: complete voting persistence");
                     }
                 }
             }];
@@ -125,6 +122,32 @@
             [alert addAction:declineAction];
    
             [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void) scrollToImaTakuvNarod:(UITableView*)tableView {
+    
+    int imaTakuvNarodIndexInPartiesArray = 28;
+    NSIndexPath *imaTakuvNarodIndexPath = [NSIndexPath indexPathForItem:imaTakuvNarodIndexInPartiesArray inSection:0];
+    
+    /**
+     #Warning the highlighting of the specific cell will not work if animated argument is YES
+     */
+    
+    [tableView scrollToRowAtIndexPath:imaTakuvNarodIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    
+    NSArray<NSIndexPath*> *visibleRows = [tableView indexPathsForVisibleRows];
+    
+    for (NSIndexPath *indexPath in visibleRows) {
+        
+        VotingTableViewCell *currentCell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        NSString* imaTakuvNarodPartyName = @"Има такъв народ";
+        
+        if ([currentCell.partyName.text  isEqual:imaTakuvNarodPartyName]) {
+            [currentCell setHighlighted:YES animated:YES];
+            break;
+        }
+    }
 }
 
 
