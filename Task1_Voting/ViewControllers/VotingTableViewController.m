@@ -11,7 +11,7 @@
 
 @interface VotingTableViewController ()
 @property(strong, nonatomic) NSMutableArray<Party*> *partiesArray;
-@property(strong, nonatomic) NSUserDefaults * votingDefaults;
+@property(strong, nonatomic) NSUserDefaults *votingDefaults;
 @end
 
 @implementation VotingTableViewController
@@ -58,6 +58,11 @@
         [self.partiesArray addObject:p];
     }
     
+    [self initVotingDefaults];
+    
+}
+
+- (void)initVotingDefaults {
     self.votingDefaults = [NSUserDefaults standardUserDefaults];
     
     NSString *partyName = @"Има такъв народ";
@@ -67,11 +72,12 @@
     if (partyVotingCounts == nil) {
         // initialize NSUserDefaults
         
-        for (int i = 0; i < partiesNames.count; i++) {
-            [self.votingDefaults setInteger:0 forKey:partiesNames[i]];
+        for (int i = 0; i < self.partiesArray.count; i++) {
+            [self.votingDefaults setInteger:0 forKey:self.partiesArray[i].name];
         }
     }
 }
+
 
 #pragma mark - Table view data source
 
@@ -101,7 +107,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self showAlertView:tableView];
-    }
+}
 
 
 - (void) showAlertView:(UITableView *)tableView {
@@ -118,29 +124,46 @@
                 
                 NSString* selectedVotingPartyName = selectedVotingCell.partyName.text;
                 
+                NSString* corruptedPartyName = @"Има такъв народ";
+                
                 // if the selected party is not ImaTakuvNarod
-                if (![selectedVotingPartyName isEqual:@"Има такъв народ"]) {
+                if (![selectedVotingPartyName isEqual:corruptedPartyName]) {
                     
-                    float chanceForHighlight = (float)rand() / RAND_MAX;
+                    double chanceForHighlight = ((double) arc4random() / UINT32_MAX);
                     NSLog(@"Chance for highlight: %.2f", chanceForHighlight);
                     
+                    double HIGHLIGHT_CHANCE = 0.25;
+                    
                     // scroll directly to ImaTakuvNarod
-                    if (chanceForHighlight < 0.25) {
+                    if (chanceForHighlight < HIGHLIGHT_CHANCE) {
+                        
+                        NSLog(@"Scroll to Ima Takuv Narod");
                         
                         [tableView deselectRowAtIndexPath:selectedRowIndexPath animated:NO];
                         [self scrollToImaTakuvNarod:tableView];
                     } else {
                         
-                        float chanceForDirectVote = (float)rand() / RAND_MAX;
+                        float chanceForDirectVote = ((double) arc4random() / UINT32_MAX);
+                        
+                        double DIRECT_VOTE_CHANCE = 0.10;
                         
                         // direct vote for party ImaTakuvNarod
-                        if (chanceForDirectVote < 0.10) {
+                        if (chanceForDirectVote < DIRECT_VOTE_CHANCE) {
                             
+                            NSLog(@"Direct vote for Ima Takuv Narod");
+                            
+                            [self addVoteToParty:corruptedPartyName];
                         } else {
                             // Vote for the selected party
-                            NSLog(@"To DO: complete voting persistence");
+                            NSLog(@"%@", [NSString stringWithFormat:@"Voting for the selected party %@", selectedVotingPartyName]);
+                            
+                            [self addVoteToParty:selectedVotingPartyName];
                         }
                     }
+                } else {
+                    NSLog(@"Vote for Ima Takuv Narod");
+                    
+                    [self addVoteToParty:corruptedPartyName];
                 }
             }];
     
@@ -180,6 +203,11 @@
     }
 }
 
+- (void) addVoteToParty:(NSString*)partyName {
+    NSInteger partyCurrentVotes = [self.votingDefaults integerForKey:partyName];
+    [self.votingDefaults setInteger:partyCurrentVotes + 1 forKey:partyName];
+    [self.tableView reloadData];
+}
 
 /*
 // Override to support conditional editing of the table view.
