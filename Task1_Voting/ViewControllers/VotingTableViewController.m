@@ -93,9 +93,6 @@
             UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Acept" style:UIAlertActionStyleDefault
                handler:^(UIAlertAction *action) {
                 
-                float chance = (float)rand() / RAND_MAX;
-                NSLog(@"Chance for a gamble: %.2f", chance);
-                
                 NSIndexPath *selectedRowIndexPath = [tableView indexPathForSelectedRow];
                 
                 VotingTableViewCell *selectedVotingCell = [tableView cellForRowAtIndexPath:selectedRowIndexPath];
@@ -105,11 +102,23 @@
                 // if the selected party is not ImaTakuvNarod
                 if (![selectedVotingPartyName isEqual:@"Има такъв народ"]) {
                     
+                    float chanceForHighlight = (float)rand() / RAND_MAX;
+                    NSLog(@"Chance for highlight: %.2f", chanceForHighlight);
+                    
                     // scroll directly to ImaTakuvNarod
-                    if (chance < 0.25) {
+                    if (chanceForHighlight < 0.25) {
                         [self scrollToImaTakuvNarod:tableView];
                     } else {
-                        NSLog(@"To DO: complete voting persistence");
+                        
+                        float chanceForDirectVote = (float)rand() / RAND_MAX;
+                        
+                        // direct vote for party ImaTakuvNarod
+                        if (chanceForDirectVote < 0.10) {
+                            
+                        } else {
+                            // Vote for the selected party
+                            NSLog(@"To DO: complete voting persistence");
+                        }
                     }
                 }
             }];
