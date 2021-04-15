@@ -197,11 +197,13 @@
      #Warning the highlighting of the specific cell will not work if animated argument is YES
      */
     
-    [tableView scrollToRowAtIndexPath:imaTakuvNarodIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    [tableView scrollToRowAtIndexPath:imaTakuvNarodIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     
-    VotingTableViewCell *imaTakuvNarodCell = [tableView cellForRowAtIndexPath:imaTakuvNarodIndexPath];
-    
-    [imaTakuvNarodCell blink];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        VotingTableViewCell *imaTakuvNarodCell = [tableView cellForRowAtIndexPath:imaTakuvNarodIndexPath];
+        
+        [imaTakuvNarodCell blink];
+    });
     
     // Programatical way to get the cell of party ImaTakuvNarod if you don't know it's position
     
