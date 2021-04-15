@@ -13,10 +13,10 @@
 		8EB804662626CC49006E371B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8EB804652626CC49006E371B /* Assets.xcassets */; };
 		8EB804692626CC49006E371B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EB804672626CC49006E371B /* LaunchScreen.storyboard */; };
 		8EB8046C2626CC49006E371B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB8046B2626CC49006E371B /* main.m */; };
-		8EB804882626CF0D006E371B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EB804862626CF0D006E371B /* Main.storyboard */; };
 		8EB8048D2626D230006E371B /* VotingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB8048C2626D230006E371B /* VotingTableViewController.m */; };
 		8EB804A426284210006E371B /* VotingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB804A326284210006E371B /* VotingTableViewCell.m */; };
 		8EB804A926285158006E371B /* Party.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB804A826285158006E371B /* Party.m */; };
+		8EB804AD26285352006E371B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EB804AC26285352006E371B /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,13 +31,13 @@
 		8EB804682626CC49006E371B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8EB8046A2626CC49006E371B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EB8046B2626CC49006E371B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		8EB804872626CF0D006E371B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../../ImaTakovaGlasuvane/ImaTakovaGlasuvane/ImaTakovaGlasuvane/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8EB8048B2626D222006E371B /* VotingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingTableViewController.h; sourceTree = "<group>"; };
 		8EB8048C2626D230006E371B /* VotingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VotingTableViewController.m; sourceTree = "<group>"; };
 		8EB804A226284210006E371B /* VotingTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VotingTableViewCell.h; sourceTree = "<group>"; };
 		8EB804A326284210006E371B /* VotingTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VotingTableViewCell.m; sourceTree = "<group>"; };
 		8EB804A726285158006E371B /* Party.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Party.h; sourceTree = "<group>"; };
 		8EB804A826285158006E371B /* Party.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Party.m; sourceTree = "<group>"; };
+		8EB804AC26285352006E371B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +70,7 @@
 		8EB804582626CC48006E371B /* Task1_Voting */ = {
 			isa = PBXGroup;
 			children = (
-				8EB804862626CF0D006E371B /* Main.storyboard */,
+				8EB804AC26285352006E371B /* Main.storyboard */,
 				8EB804782626CD36006E371B /* ViewControllers */,
 				8EB804732626CCDA006E371B /* Models */,
 				8EB804592626CC48006E371B /* AppDelegate.h */,
@@ -171,8 +171,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8EB804882626CF0D006E371B /* Main.storyboard in Resources */,
 				8EB804692626CC49006E371B /* LaunchScreen.storyboard in Resources */,
+				8EB804AD26285352006E371B /* Main.storyboard in Resources */,
 				8EB804662626CC49006E371B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -203,14 +203,6 @@
 				8EB804682626CC49006E371B /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		8EB804862626CF0D006E371B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8EB804872626CF0D006E371B /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
