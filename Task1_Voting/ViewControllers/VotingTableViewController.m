@@ -12,7 +12,6 @@
 @interface VotingTableViewController ()
 @property(strong, nonatomic) NSMutableArray<Party*> *partiesArray;
 @property(strong, nonatomic) NSUserDefaults *votingDefaults;
-@property(strong, nonatomic) UISelectionFeedbackGenerator *selectionFeedbackGenerator;
 @end
 
 @implementation VotingTableViewController
@@ -60,9 +59,6 @@
     }
     
     [self initVotingDefaults];
-    
-    self.selectionFeedbackGenerator = [[UISelectionFeedbackGenerator alloc] init];
-    [self.selectionFeedbackGenerator prepare];
 }
 
 - (void)initVotingDefaults {
@@ -142,10 +138,8 @@
                         
                         NSLog(@"Scroll to Ima Takuv Narod");
                         
-                        [tableView deselectRowAtIndexPath:selectedRowIndexPath animated:NO];
+                        [tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
                         [self scrollToImaTakuvNarod:tableView];
-                        
-                        [self.selectionFeedbackGenerator selectionChanged];
                         
                     } else {
                         
