@@ -132,76 +132,60 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
    // [self showAlertView:tableView];
+    [self vote:tableView];
 }
 
-
-- (void) showAlertView:(UITableView *)tableView {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Legal voting confirmation"
-                                           message:@"Confirm that you are atleast 18 years old to vote!"
-                                           preferredStyle:UIAlertControllerStyleAlert];
+- (void)vote:(UITableView *)tableView {
     
-            UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault
-               handler:^(UIAlertAction *action) {
-                
-                NSIndexPath *selectedRowIndexPath = [tableView indexPathForSelectedRow];
-                
-                VotingTableViewCell *selectedVotingCell = [tableView cellForRowAtIndexPath:selectedRowIndexPath];
-                
-                NSString* selectedVotingPartyName = selectedVotingCell.partyName.text;
-                
-                NSString* corruptedPartyName = @"Има такъв народ";
-                
-                // if the selected party is not ImaTakuvNarod
-                if (![selectedVotingPartyName isEqual:corruptedPartyName]) {
-                    
-                    double chanceForHighlight = ((double) arc4random() / UINT32_MAX);
-                    NSLog(@"Chance for highlight: %.2f", chanceForHighlight);
-                    
-                    double HIGHLIGHT_CHANCE = 0.25;
-                    
-                    // scroll directly to ImaTakuvNarod
-                    if (chanceForHighlight < HIGHLIGHT_CHANCE) {
-                        
-                        NSLog(@"Scroll to Ima Takuv Narod");
-                        
-                        [tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
-                        [self scrollToImaTakuvNarod:tableView];
-                        
-                        AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-                    } else {
-                        
-                        float chanceForDirectVote = ((double) arc4random() / UINT32_MAX);
-                        
-                        double DIRECT_VOTE_CHANCE = 0.10;
-                        
-                        // direct vote for party ImaTakuvNarod
-                        if (chanceForDirectVote < DIRECT_VOTE_CHANCE) {
-                            
-                            NSLog(@"Direct vote for Ima Takuv Narod");
-                            
-                            [self addVoteToParty:corruptedPartyName];
-                        } else {
-                            // Vote for the selected party
-                            NSLog(@"%@", [NSString stringWithFormat:@"Voting for the selected party %@", selectedVotingPartyName]);
-                            
-                            [self addVoteToParty:selectedVotingPartyName];
-                        }
-                    }
-                } else {
-                    NSLog(@"Vote for Ima Takuv Narod");
-                    
-                    [self addVoteToParty:corruptedPartyName];
-                }
-            }];
+    NSIndexPath *selectedRowIndexPath = [tableView indexPathForSelectedRow];
     
-            UIAlertAction *declineAction = [UIAlertAction actionWithTitle:@"Decline" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                exit(0);
-            }];
+    VotingTableViewCell *selectedVotingCell = [tableView cellForRowAtIndexPath:selectedRowIndexPath];
     
-            [alert addAction:acceptAction];
-            [alert addAction:declineAction];
-   
-            [self presentViewController:alert animated:YES completion:nil];
+    NSString* selectedVotingPartyName = selectedVotingCell.partyName.text;
+    
+    NSString* corruptedPartyName = @"Има такъв народ";
+    
+    // if the selected party is not ImaTakuvNarod
+    if (![selectedVotingPartyName isEqual:corruptedPartyName]) {
+        
+        double chanceForHighlight = ((double) arc4random() / UINT32_MAX);
+        NSLog(@"Chance for highlight: %.2f", chanceForHighlight);
+        
+        double HIGHLIGHT_CHANCE = 0.25;
+        
+        // scroll directly to ImaTakuvNarod
+        if (chanceForHighlight < HIGHLIGHT_CHANCE) {
+            
+            NSLog(@"Scroll to Ima Takuv Narod");
+            
+            [tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
+            [self scrollToImaTakuvNarod:tableView];
+            
+            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+        } else {
+            
+            float chanceForDirectVote = ((double) arc4random() / UINT32_MAX);
+            
+            double DIRECT_VOTE_CHANCE = 0.10;
+            
+            // direct vote for party ImaTakuvNarod
+            if (chanceForDirectVote < DIRECT_VOTE_CHANCE) {
+                
+                NSLog(@"Direct vote for Ima Takuv Narod");
+                
+                [self addVoteToParty:corruptedPartyName];
+            } else {
+                // Vote for the selected party
+                NSLog(@"%@", [NSString stringWithFormat:@"Voting for the selected party %@", selectedVotingPartyName]);
+                
+                [self addVoteToParty:selectedVotingPartyName];
+            }
+        }
+    } else {
+        NSLog(@"Vote for Ima Takuv Narod");
+        
+        [self addVoteToParty:corruptedPartyName];
+    }
 }
 
 - (void) scrollToImaTakuvNarod:(UITableView*)tableView {
@@ -213,7 +197,7 @@
      #Warning the highlighting of the specific cell will not work if animated argument is YES
      */
     
-    [tableView scrollToRowAtIndexPath:imaTakuvNarodIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [tableView scrollToRowAtIndexPath:imaTakuvNarodIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
     
     VotingTableViewCell *imaTakuvNarodCell = [tableView cellForRowAtIndexPath:imaTakuvNarodIndexPath];
     
