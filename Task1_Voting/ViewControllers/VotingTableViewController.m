@@ -79,6 +79,30 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [self showAgeConfirmationAlert];
+}
+
+- (void)showAgeConfirmationAlert{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Legal voting confirmation"
+                                message:@"Confirm that you are atleast 18 years old to vote!"
+                                preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault
+       handler:^(UIAlertAction *action) {}];
+    
+    
+    UIAlertAction *declineAction = [UIAlertAction actionWithTitle:@"Decline" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        exit(0);
+    }];
+
+    [alert addAction:acceptAction];
+    [alert addAction:declineAction];
+
+    [self presentViewController:alert animated:NO completion:nil];
+}
+
 
 #pragma mark - Table view data source
 
@@ -107,7 +131,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self showAlertView:tableView];
+   // [self showAlertView:tableView];
 }
 
 
@@ -116,7 +140,7 @@
                                            message:@"Confirm that you are atleast 18 years old to vote!"
                                            preferredStyle:UIAlertControllerStyleAlert];
     
-            UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Acept" style:UIAlertActionStyleDefault
+            UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault
                handler:^(UIAlertAction *action) {
                 
                 NSIndexPath *selectedRowIndexPath = [tableView indexPathForSelectedRow];
@@ -170,7 +194,7 @@
                 }
             }];
     
-            UIAlertAction *declineAction = [UIAlertAction actionWithTitle:@"Decline" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            UIAlertAction *declineAction = [UIAlertAction actionWithTitle:@"Decline" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
                 exit(0);
             }];
     
@@ -189,7 +213,7 @@
      #Warning the highlighting of the specific cell will not work if animated argument is YES
      */
     
-    [tableView scrollToRowAtIndexPath:imaTakuvNarodIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    [tableView scrollToRowAtIndexPath:imaTakuvNarodIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     
     VotingTableViewCell *imaTakuvNarodCell = [tableView cellForRowAtIndexPath:imaTakuvNarodIndexPath];
     
