@@ -23,6 +23,26 @@
         NSLog(@"Selected a party");
     }
     
+- (void)blink {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.backgroundColor = UIColor.systemBlueColor;
+        }  completion:^(BOOL finished){
+            
+            [UIView animateWithDuration:0.5 animations:^{
+                self.backgroundColor = UIColor.clearColor;
+            } completion:^(BOOL finished){
+                
+                [UIView animateWithDuration:0.5 animations:^{
+                    self.backgroundColor = UIColor.systemBlueColor;
+                } completion:^(BOOL finished) {
+                    
+                    [UIView animateWithDuration:0.5 animations:^{
+                        self.backgroundColor = UIColor.clearColor;
+                    }];
+                }];
+            }];
+        }];
+
 }
 
 @end

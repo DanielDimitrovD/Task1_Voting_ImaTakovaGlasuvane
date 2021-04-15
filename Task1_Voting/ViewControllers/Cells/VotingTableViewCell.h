@@ -14,7 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIImageView *partyImage;
 @property (weak, nonatomic) IBOutlet UILabel *partyNumber;
 @property (weak, nonatomic) IBOutlet UILabel *partyName;
+@property (weak, nonatomic) IBOutlet UILabel *partyVotes;
 
+-(void)blink;
 @end
 
 NS_ASSUME_NONNULL_END
