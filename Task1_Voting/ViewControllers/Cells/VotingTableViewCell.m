@@ -26,7 +26,6 @@
 }
 
 -(void)blink {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.5 animations:^{
             self.backgroundColor = UIColor.systemBlueColor;
         }  completion:^(BOOL finished){
@@ -45,8 +44,6 @@
                 }];
             }];
         }];
-    });
-       
 }
 
 @end
