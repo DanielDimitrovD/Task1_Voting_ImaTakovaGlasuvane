@@ -1,8 +1,8 @@
 //
 //  VotingTableViewCell.h
-//  ImaTakovaGlasuvane
+//  Task1_Voting
 //
-//  Created by A-Team Intern on 13.04.21.
+//  Created by A-Team Intern on 15.04.21.
 //
 
 #import <UIKit/UIKit.h>
