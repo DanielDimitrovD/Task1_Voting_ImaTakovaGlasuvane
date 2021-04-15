@@ -17,6 +17,7 @@
 		8EB804A426284210006E371B /* VotingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB804A326284210006E371B /* VotingTableViewCell.m */; };
 		8EB804A926285158006E371B /* Party.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB804A826285158006E371B /* Party.m */; };
 		8EB804AD26285352006E371B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EB804AC26285352006E371B /* Main.storyboard */; };
+		8EB804B22628979E006E371B /* PartyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB804B12628979E006E371B /* PartyViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,8 @@
 		8EB804A726285158006E371B /* Party.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Party.h; sourceTree = "<group>"; };
 		8EB804A826285158006E371B /* Party.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Party.m; sourceTree = "<group>"; };
 		8EB804AC26285352006E371B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		8EB804B02628979E006E371B /* PartyViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PartyViewController.h; sourceTree = "<group>"; };
+		8EB804B12628979E006E371B /* PartyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PartyViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +105,8 @@
 				8EB8048C2626D230006E371B /* VotingTableViewController.m */,
 				8EB8048B2626D222006E371B /* VotingTableViewController.h */,
 				8EB8047D2626CD62006E371B /* Cells */,
+				8EB804B02628979E006E371B /* PartyViewController.h */,
+				8EB804B12628979E006E371B /* PartyViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -191,6 +196,7 @@
 				8EB8045E2626CC48006E371B /* SceneDelegate.m in Sources */,
 				8EB804A926285158006E371B /* Party.m in Sources */,
 				8EB8048D2626D230006E371B /* VotingTableViewController.m in Sources */,
+				8EB804B22628979E006E371B /* PartyViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
