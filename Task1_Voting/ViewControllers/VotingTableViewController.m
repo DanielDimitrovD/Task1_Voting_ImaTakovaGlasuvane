@@ -9,6 +9,8 @@
 #import "Party.h"
 #import "VotingTableViewCell.h"
 
+#import <AudioToolbox/AudioServices.h>
+
 @interface VotingTableViewController ()
 @property(strong, nonatomic) NSMutableArray<Party*> *partiesArray;
 @property(strong, nonatomic) NSUserDefaults *votingDefaults;
@@ -141,6 +143,7 @@
                         [tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
                         [self scrollToImaTakuvNarod:tableView];
                         
+                        AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
                     } else {
                         
                         float chanceForDirectVote = ((double) arc4random() / UINT32_MAX);
