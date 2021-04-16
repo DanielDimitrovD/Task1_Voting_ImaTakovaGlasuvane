@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIImageView *partyImage;
 @property (weak, nonatomic) IBOutlet UILabel *partyName;
 
++(instancetype)partyViewControllerWith:(UIImageView *)partyImage andPartyName:(UILabel *)partyName;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -18,6 +18,20 @@
     // Do any additional setup after loading the view.
 }
 
++ (instancetype)partyViewControllerWith:(UIImageView *)partyImage andPartyName:(UILabel *)partyName {
+    
+    PartyViewController *p = [[PartyViewController alloc] init];
+    
+    if (self) {
+        p.partyImage = partyImage;
+        p.partyName = partyName;
+    }
+
+    return p;
+}
+
+
+
 /*
 #pragma mark - Navigation
 

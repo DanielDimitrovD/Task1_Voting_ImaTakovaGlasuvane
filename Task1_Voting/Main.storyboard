@@ -13,7 +13,7 @@
             <objects>
                 <viewController id="921-kD-Aw0" customClass="PartyViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="spG-7S-L9B">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HiX-us-nNy">
@@ -31,6 +31,7 @@
                         <viewLayoutGuide key="safeArea" id="qv6-Th-evK"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="tQv-w8-WSj"/>
                     <connections>
                         <outlet property="partyImage" destination="HiX-us-nNy" id="A0B-1k-i38"/>
                         <outlet property="partyName" destination="RAl-Pa-TX6" id="CaI-kf-reZ"/>
@@ -38,7 +39,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OFY-FU-3tN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1579.7101449275362" y="55.580357142857139"/>
+            <point key="canvasLocation" x="-958" y="112"/>
         </scene>
         <!--Voting Table View Controller-->
         <scene sceneID="SqS-nL-rp4">
@@ -88,6 +89,7 @@
                                     <outlet property="partyName" destination="mYi-Ip-eat" id="Yk4-5O-4MP"/>
                                     <outlet property="partyNumber" destination="4fa-57-soH" id="cBs-oQ-gdb"/>
                                     <outlet property="partyVotes" destination="wvn-Op-1xp" id="j6Z-Rj-MUu"/>
+                                    <segue destination="921-kD-Aw0" kind="show" identifier="showPartyDetailsSegue" id="9pT-RK-IjG"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -99,7 +101,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecT-wG-DTh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-582.60869565217399" y="98.4375"/>
+            <point key="canvasLocation" x="-1791" y="112"/>
         </scene>
     </scenes>
     <resources>
