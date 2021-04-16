@@ -5,9 +5,14 @@
 //  Created by A-Team Intern on 15.04.21.
 //
 
+#import "VotingTableViewController.h"
 #import "PartyViewController.h"
 
 @interface PartyViewController ()
+
+@property(strong, nonatomic) NSString *partyName;
+@property(strong, nonatomic) UIImage *partyImage;
+@property(assign, nonatomic) int partyNumber;
 
 @end
 
@@ -16,21 +21,39 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.partyImageView.image = self.partyImage;
+    self.partyNameLabel.text = self.partyName;
+    self.partyNumberLabel.text = [NSString stringWithFormat:@"%d", self.partyNumber];
 }
 
-+ (instancetype)partyViewControllerWith:(UIImageView *)partyImage andPartyName:(UILabel *)partyName {
++ (instancetype)viewControllerWithPartyName:(NSString *)partyName  parentTableViewController:(VotingTableViewController *)parentController andNumber:(int)partyNumber {
+   
+    NSString *partyNumberString = [NSString stringWithFormat:@"%d", partyNumber];
     
-    PartyViewController *p = [[PartyViewController alloc] init];
+    UIImage *uiPartyImage = [UIImage imageNamed:partyNumberString];
     
-    if (self) {
-        p.partyImage = partyImage;
-        p.partyName = partyName;
-    }
-
-    return p;
+    UIStoryboard *mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    PartyViewController *partyViewController = [mainStoryboard instantiateViewControllerWithIdentifier:@"PartyViewControllerID"];
+    
+    partyViewController.partyName = partyName;
+    partyViewController.partyImage = uiPartyImage;
+    partyViewController.partyNumber = partyNumber;
+    partyViewController.parentVotingTableViewController = parentController;
+    
+    return partyViewController;
 }
 
+- (IBAction)backButtonTap:(UIButton *)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
+- (IBAction)voteButtonTap:(UIButton *)sender {
+    
+    [self.parentVotingTableViewController voteForPartyWithNumber:self.partyNumber];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 /*
 #pragma mark - Navigation

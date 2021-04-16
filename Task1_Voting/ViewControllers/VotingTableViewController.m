@@ -8,6 +8,7 @@
 #import "VotingTableViewController.h"
 #import "Party.h"
 #import "VotingTableViewCell.h"
+#import "PartyViewController.h"
 
 #import <AudioToolbox/AudioServices.h>
 
@@ -54,30 +55,39 @@
     
     self.partiesArray = [[NSMutableArray alloc] init];
         
+    self.votingDefaults = [NSUserDefaults standardUserDefaults];
+    
     for (int i = 0; i < partiesNames.count; i++) {
         
-        Party* p = [Party partyWithName:partiesNames[i] imageName: [NSString stringWithFormat:@"%d", i + 1] andNumber:i + 1];
+        int votesForParty = 0;
+        
+        if ([self.votingDefaults objectForKey:partiesNames[i]] != nil) {
+            votesForParty = (int)[self.votingDefaults integerForKey:partiesNames[i]];
+        }
+        
+        Party* p = [Party partyWithName:partiesNames[i] imageName:[NSString stringWithFormat:@"%d", i + 1]
+                             partyVotes:votesForParty andNumber:i + 1];
         [self.partiesArray addObject:p];
     }
     
-    [self initVotingDefaults];
+  //  [self initVotingDefaults];
 }
 
-- (void)initVotingDefaults {
-    self.votingDefaults = [NSUserDefaults standardUserDefaults];
-    
-    NSString *partyName = @"Има такъв народ";
-    
-    id partyVotingCounts = [self.votingDefaults objectForKey:partyName ];
-    
-    if (partyVotingCounts == nil) {
-        // initialize NSUserDefaults
-        
-        for (int i = 0; i < self.partiesArray.count; i++) {
-            [self.votingDefaults setInteger:0 forKey:self.partiesArray[i].name];
-        }
-    }
-}
+//- (void)initVotingDefaults {
+//    self.votingDefaults = [NSUserDefaults standardUserDefaults];
+//
+//    NSString *partyName = @"Има такъв народ";
+//
+//    id partyVotingCounts = [self.votingDefaults objectForKey:partyName];
+//
+//    if (partyVotingCounts == nil) {
+//        // initialize NSUserDefaults
+//
+//        for (int i = 0; i < self.partiesArray.count; i++) {
+//            [self.votingDefaults setInteger:0 forKey:self.partiesArray[i].name];
+//        }
+//    }
+//}
 
 - (void)viewDidAppear:(BOOL)animated{
     [self showAgeConfirmationAlert];
@@ -103,6 +113,12 @@
     [self presentViewController:alert animated:NO completion:nil];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    for (int i = 0; i < self.partiesArray.count; i++) {
+        [self.votingDefaults setInteger:self.partiesArray[i].partyVotes forKey:self.partiesArray[i].name];
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -122,101 +138,97 @@
     cell.partyNumber.text = [NSString stringWithFormat:@"%d", currentParty.number];
     cell.partyName.text = currentParty.name;
     
-    NSInteger currentPartyVotesCount = [self.votingDefaults integerForKey:currentParty.name];
+  //  NSInteger currentPartyVotesCount = [self.votingDefaults integerForKey:currentParty.name];
     
-    cell.partyVotes.text = [NSString stringWithFormat:@"%ld", currentPartyVotesCount];
+   // cell.partyVotes.text = [NSString stringWithFormat:@"%ld", currentPartyVotesCount];
+    cell.partyVotes.text = [NSString stringWithFormat:@"%d", currentParty.partyVotes];
     
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSString* selectedVotingPartyName = self.partiesArray[indexPath.item].name;
+    NSString *selectedVotingPartyName = self.partiesArray[indexPath.item].name;
+    
+    int selectedVotingPartyNumber = self.partiesArray[indexPath.item].number;
     
     NSString *corruptedPartyName = @"Има такъв народ";
-        
+    int corruptedPartyNumber = 29;
+  
     if (![selectedVotingPartyName isEqual:corruptedPartyName]) {
-       
+
         // scroll directly to ImaTakuvNarod
         if ([self isHighlightedPosibility]) {
 
             NSLog(@"Scroll to Ima Takuv Narod");
-            
+
             [self scrollToImaTakuvNarod:tableView];
         } else if ([self isDirectVoteForImaTakuvNarod]) {
 
             NSLog(@"Direct vote for Ima Takuv Narod");
             
-            [self addVoteToParty:corruptedPartyName];
+            [self voteForPartyWithNumber:corruptedPartyNumber];
         } else {
-            // Vote for the selected party
-            NSLog(@"%@", [NSString stringWithFormat:@"Voting for the selected party %@", selectedVotingPartyName]);
+           
+            //NSLog(@"%@", [NSString stringWithFormat:@"Voting for the selected party %@", selectedVotingPartyName]);
             
-            [self addVoteToParty:selectedVotingPartyName];
+            // Open PartyView
+            PartyViewController *partyViewController = [PartyViewController viewControllerWithPartyName:selectedVotingPartyName parentTableViewController:self andNumber:selectedVotingPartyNumber];
+            
+            [self presentViewController:partyViewController animated:YES completion:nil];
         }
     } else {
         NSLog(@"Vote for Ima Takuv Narod");
         
-        [self addVoteToParty:corruptedPartyName];
+        PartyViewController *partyViewController = [PartyViewController viewControllerWithPartyName:selectedVotingPartyName parentTableViewController:self andNumber:selectedVotingPartyNumber];
+        
+        [self presentViewController:partyViewController animated:YES completion:nil];
     }
+}
+
+- (void)voteForPartyWithNumber:(int)partyNumber {
+    [self.partiesArray[partyNumber - 1] didReceiveVote];
+    [self.tableView reloadData];
 }
 
 - (BOOL)isHighlightedPosibility {
     double chanceForHighlight = ((double) arc4random() / UINT32_MAX);
     NSLog(@"Chance for highlight: %.2f", chanceForHighlight);
-    
+
     double HIGHLIGHT_CHANCE = 0.25;
-    
+
     if (chanceForHighlight < HIGHLIGHT_CHANCE) {
         return true;
     }
-    
+
     return false;
 }
 
 - (BOOL)isDirectVoteForImaTakuvNarod{
     float chanceForDirectVote = ((double) arc4random() / UINT32_MAX);
-    
+
     double DIRECT_VOTE_CHANCE = 0.10;
-    
+
     // direct vote for party ImaTakuvNarod
     if (chanceForDirectVote < DIRECT_VOTE_CHANCE) {
         return true;
     }
-    
+
     return false;
 }
 
 - (void) scrollToImaTakuvNarod:(UITableView*)tableView {
-    
+
     int imaTakuvNarodIndexInPartiesArray = 28;
     NSIndexPath *imaTakuvNarodIndexPath = [NSIndexPath indexPathForItem:imaTakuvNarodIndexInPartiesArray inSection:0];
 
     [tableView scrollToRowAtIndexPath:imaTakuvNarodIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
+
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         VotingTableViewCell *imaTakuvNarodCell = [tableView cellForRowAtIndexPath:imaTakuvNarodIndexPath];
-        
+
         [imaTakuvNarodCell blink];
     });
-    
-    // Programatical way to get the cell of party ImaTakuvNarod if you don't know it's position
-    
-//    NSArray<NSIndexPath*> *visibleRows = [tableView indexPathsForVisibleRows];
-//
-//    for (NSIndexPath *indexPath in visibleRows) {
-//
-//        VotingTableViewCell *currentCell = [tableView cellForRowAtIndexPath:indexPath];
-//
-//        NSString* imaTakuvNarodPartyName = @"Има такъв народ";
-//
-//        if ([currentCell.partyName.text  isEqual:imaTakuvNarodPartyName]) {
-//
-//            [currentCell blink];
-//
-//            break;
-//        }
-//    }
 }
 
 - (void) addVoteToParty:(NSString*)partyName {

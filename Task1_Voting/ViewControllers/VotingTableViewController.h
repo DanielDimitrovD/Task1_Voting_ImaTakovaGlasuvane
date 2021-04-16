@@ -10,6 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface VotingTableViewController : UITableViewController
+-(void)voteForPartyWithNumber:(int)partyNumber;
 @end
 
 NS_ASSUME_NONNULL_END

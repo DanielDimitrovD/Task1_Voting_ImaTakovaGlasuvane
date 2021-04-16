@@ -10,10 +10,16 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PartyViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UIImageView *partyImage;
-@property (weak, nonatomic) IBOutlet UILabel *partyName;
+@property (weak, nonatomic) IBOutlet UIImageView *partyImageView;
+@property (weak, nonatomic) IBOutlet UILabel *partyNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *partyNumberLabel;
+@property (strong, nonatomic) VotingTableViewController *parentVotingTableViewController;
 
-+(instancetype)partyViewControllerWith:(UIImageView *)partyImage andPartyName:(UILabel *)partyName;
+-(IBAction)voteButtonTap:(UIButton *)sender;
+
+-(IBAction)backButtonTap:(UIButton *)sender;
+
++(instancetype)viewControllerWithPartyName:(NSString *)partyName parentTableViewController:(VotingTableViewController *)parentController andNumber:(int)partyNumber;
 @end
 
 NS_ASSUME_NONNULL_END
