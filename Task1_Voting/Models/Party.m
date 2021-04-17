@@ -17,7 +17,7 @@
 
 @implementation Party
 
-- (instancetype) initWithName:(NSString*)name image:(UIImage*)image partyVotes:(int)partyVotes andNumber:(int)number {
+- (instancetype)initWithName:(NSString*)name image:(UIImage*)image partyVotes:(int)partyVotes andNumber:(int)number {
     self = [super init];
     
     if (self) {
@@ -30,7 +30,7 @@
     return self;
 }
 
-+ (instancetype) partyWithName:(NSString*)name imageName:(NSString*)imageName partyVotes:(int)partyVotes andNumber:(int)number {
++ (instancetype)partyWithName:(NSString*)name imageName:(NSString*)imageName partyVotes:(int)partyVotes andNumber:(int)number {
     UIImage* image = [UIImage imageNamed:imageName];
     
     Party* party = [[Party alloc] initWithName:name image:image partyVotes:partyVotes andNumber:number];

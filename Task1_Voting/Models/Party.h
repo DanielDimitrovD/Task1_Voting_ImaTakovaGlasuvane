@@ -18,8 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(readonly) int number;
 @property(readonly, nonatomic) int partyVotes;
 
-+ (instancetype) partyWithName:(NSString*)name imageName:(NSString*)imageName partyVotes:(int)partyVotes andNumber:(int)number;
-- (void)didReceiveVote;
++(instancetype) partyWithName:(NSString*)name imageName:(NSString*)imageName partyVotes:(int)partyVotes andNumber:(int)number;
+-(void)didReceiveVote;
 
 @end
 NS_ASSUME_NONNULL_END

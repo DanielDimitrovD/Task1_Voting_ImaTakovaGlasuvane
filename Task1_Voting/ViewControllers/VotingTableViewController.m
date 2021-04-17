@@ -69,27 +69,13 @@
                              partyVotes:votesForParty andNumber:i + 1];
         [self.partiesArray addObject:p];
     }
-    
-  //  [self initVotingDefaults];
 }
 
-//- (void)initVotingDefaults {
-//    self.votingDefaults = [NSUserDefaults standardUserDefaults];
-//
-//    NSString *partyName = @"Има такъв народ";
-//
-//    id partyVotingCounts = [self.votingDefaults objectForKey:partyName];
-//
-//    if (partyVotingCounts == nil) {
-//        // initialize NSUserDefaults
-//
-//        for (int i = 0; i < self.partiesArray.count; i++) {
-//            [self.votingDefaults setInteger:0 forKey:self.partiesArray[i].name];
-//        }
-//    }
-//}
-
 - (void)viewDidAppear:(BOOL)animated{
+    NSLog(@"viewDidAppear called");
+    
+    [super viewDidAppear:animated];
+    
     [self showAgeConfirmationAlert];
 }
 
@@ -113,7 +99,20 @@
     [self presentViewController:alert animated:NO completion:nil];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    NSLog(@"viewWillDisapper called");
+    
+    [super viewWillDisappear:animated];
+    
+    for (int i = 0; i < self.partiesArray.count; i++) {
+        [self.votingDefaults setInteger:self.partiesArray[i].partyVotes forKey:self.partiesArray[i].name];
+    }
+    
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+
     for (int i = 0; i < self.partiesArray.count; i++) {
         [self.votingDefaults setInteger:self.partiesArray[i].partyVotes forKey:self.partiesArray[i].name];
     }
@@ -138,9 +137,6 @@
     cell.partyNumber.text = [NSString stringWithFormat:@"%d", currentParty.number];
     cell.partyName.text = currentParty.name;
     
-  //  NSInteger currentPartyVotesCount = [self.votingDefaults integerForKey:currentParty.name];
-    
-   // cell.partyVotes.text = [NSString stringWithFormat:@"%ld", currentPartyVotesCount];
     cell.partyVotes.text = [NSString stringWithFormat:@"%d", currentParty.partyVotes];
     
     return cell;
@@ -173,14 +169,16 @@
             //NSLog(@"%@", [NSString stringWithFormat:@"Voting for the selected party %@", selectedVotingPartyName]);
             
             // Open PartyView
-            PartyViewController *partyViewController = [PartyViewController viewControllerWithPartyName:selectedVotingPartyName parentTableViewController:self andNumber:selectedVotingPartyNumber];
+            PartyViewController *partyViewController = [PartyViewController viewControllerWithPartyName:selectedVotingPartyName andNumber:selectedVotingPartyNumber];
+            
+            partyViewController.delegate = self;
             
             [self presentViewController:partyViewController animated:YES completion:nil];
         }
     } else {
         NSLog(@"Vote for Ima Takuv Narod");
         
-        PartyViewController *partyViewController = [PartyViewController viewControllerWithPartyName:selectedVotingPartyName parentTableViewController:self andNumber:selectedVotingPartyNumber];
+        PartyViewController *partyViewController = [PartyViewController viewControllerWithPartyName:selectedVotingPartyName andNumber:selectedVotingPartyNumber];
         
         [self presentViewController:partyViewController animated:YES completion:nil];
     }
@@ -231,10 +229,18 @@
     });
 }
 
-- (void) addVoteToParty:(NSString*)partyName {
+- (void)addVoteToParty:(NSString*)partyName {
     NSInteger partyCurrentVotes = [self.votingDefaults integerForKey:partyName];
     [self.votingDefaults setInteger:partyCurrentVotes + 1 forKey:partyName];
     [self.tableView reloadData];
+}
+
+- (void)didVoteForPartyWithNumber:(int)partyNumber {
+    int invalidPartyNumber = -1;
+    
+    if (partyNumber != invalidPartyNumber) {
+        [self voteForPartyWithNumber:partyNumber];
+    }
 }
 
 /*

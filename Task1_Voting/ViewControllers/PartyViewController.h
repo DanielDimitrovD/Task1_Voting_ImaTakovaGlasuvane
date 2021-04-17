@@ -7,19 +7,27 @@
 
 #import <UIKit/UIKit.h>
 
+@class PartyViewController;
+
+@protocol PartyViewControllerDelegate <NSObject>
+- (void)didVoteForPartyWithNumber:(int)partyNumber;
+@end
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PartyViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *partyImageView;
 @property (weak, nonatomic) IBOutlet UILabel *partyNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *partyNumberLabel;
-@property (strong, nonatomic) VotingTableViewController *parentVotingTableViewController;
+
+// delegate a property
+@property (nonatomic, weak) id <PartyViewControllerDelegate> delegate;
 
 -(IBAction)voteButtonTap:(UIButton *)sender;
 
 -(IBAction)backButtonTap:(UIButton *)sender;
 
-+(instancetype)viewControllerWithPartyName:(NSString *)partyName parentTableViewController:(VotingTableViewController *)parentController andNumber:(int)partyNumber;
++(instancetype)viewControllerWithPartyName:(NSString *)partyName andNumber:(int)partyNumber;
 @end
 
 NS_ASSUME_NONNULL_END

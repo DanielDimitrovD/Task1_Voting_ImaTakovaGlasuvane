@@ -27,7 +27,7 @@
     self.partyNumberLabel.text = [NSString stringWithFormat:@"%d", self.partyNumber];
 }
 
-+ (instancetype)viewControllerWithPartyName:(NSString *)partyName  parentTableViewController:(VotingTableViewController *)parentController andNumber:(int)partyNumber {
++ (instancetype)viewControllerWithPartyName:(NSString *)partyName andNumber:(int)partyNumber {
    
     NSString *partyNumberString = [NSString stringWithFormat:@"%d", partyNumber];
     
@@ -39,18 +39,22 @@
     partyViewController.partyName = partyName;
     partyViewController.partyImage = uiPartyImage;
     partyViewController.partyNumber = partyNumber;
-    partyViewController.parentVotingTableViewController = parentController;
-    
+
     return partyViewController;
 }
 
 - (IBAction)backButtonTap:(UIButton *)sender {
+    
+    int invalidPartyNumber = -1;
+    
+    [self.delegate didVoteForPartyWithNumber:invalidPartyNumber];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)voteButtonTap:(UIButton *)sender {
     
-    [self.parentVotingTableViewController voteForPartyWithNumber:self.partyNumber];
+    [self.delegate didVoteForPartyWithNumber:self.partyNumber];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }

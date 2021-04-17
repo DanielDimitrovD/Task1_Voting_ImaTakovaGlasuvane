@@ -25,7 +25,7 @@
     
 }
 
--(void)blink {
+- (void)blink {
         [UIView animateWithDuration:0.5 animations:^{
             self.backgroundColor = UIColor.systemBlueColor;
         }  completion:^(BOOL finished){
