@@ -44,17 +44,12 @@
 }
 
 - (IBAction)backButtonTap:(UIButton *)sender {
-    
-    int invalidPartyNumber = -1;
-    
-    [self.delegate didVoteForPartyWithNumber:invalidPartyNumber];
-    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)voteButtonTap:(UIButton *)sender {
     
-    [self.delegate didVoteForPartyWithNumber:self.partyNumber];
+    [self.partyViewControllerDelegate didVoteForPartyWithNumber:self.partyNumber];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }

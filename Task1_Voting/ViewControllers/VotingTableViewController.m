@@ -131,16 +131,17 @@
     
     NSString *corruptedPartyName = @"Има такъв народ";
     int corruptedPartyNumber = 29;
+    double chanceForHighlight = ((double) arc4random() / UINT32_MAX);
   
     if (![selectedVotingPartyName isEqual:corruptedPartyName]) {
 
         // scroll directly to ImaTakuvNarod
-        if ([self isHighlightedPosibility]) {
+        if ([self isHighlightedPosibility:chanceForHighlight]) {
 
             NSLog(@"Scroll to Ima Takuv Narod");
 
             [self scrollToImaTakuvNarod:tableView];
-        } else if ([self isDirectVoteForImaTakuvNarod]) {
+        } else if ([self isDirectVoteForImaTakuvNarod:chanceForHighlight]) {
 
             NSLog(@"Direct vote for Ima Takuv Narod");
             
@@ -152,7 +153,7 @@
             // Open PartyView
             PartyViewController *partyViewController = [PartyViewController viewControllerWithPartyName:selectedVotingPartyName andNumber:selectedVotingPartyNumber];
             
-            partyViewController.delegate = self;
+            partyViewController.partyViewControllerDelegate = self;
             
             [self presentViewController:partyViewController animated:YES completion:nil];
         }
@@ -161,7 +162,7 @@
         
         PartyViewController *partyViewController = [PartyViewController viewControllerWithPartyName:selectedVotingPartyName andNumber:selectedVotingPartyNumber];
         
-        partyViewController.delegate = self;
+        partyViewController.partyViewControllerDelegate = self;
         
         [self presentViewController:partyViewController animated:YES completion:nil];
     }
@@ -175,30 +176,15 @@
     [self.votingDefaults setInteger:self.partiesArray[partyNumberIndexInArray].partyVotes forKey:self.partiesArray[partyNumberIndexInArray].name];
 }
 
-- (BOOL)isHighlightedPosibility {
-    double chanceForHighlight = ((double) arc4random() / UINT32_MAX);
-    NSLog(@"Chance for highlight: %.2f", chanceForHighlight);
-
-    double HIGHLIGHT_CHANCE = 0.25;
-
-    if (chanceForHighlight < HIGHLIGHT_CHANCE) {
-        return true;
-    }
-
-    return false;
+- (BOOL)isHighlightedPosibility:(double)voteProbability {
+//    NSLog(@"Chance for highlight: %.2f", chanceForHighlight);
+    double highlightPossibilityUpperBound = 0.35;
+    return voteProbability < highlightPossibilityUpperBound;
 }
 
-- (BOOL)isDirectVoteForImaTakuvNarod{
-    float chanceForDirectVote = ((double) arc4random() / UINT32_MAX);
-
-    double DIRECT_VOTE_CHANCE = 0.10;
-
-    // direct vote for party ImaTakuvNarod
-    if (chanceForDirectVote < DIRECT_VOTE_CHANCE) {
-        return true;
-    }
-
-    return false;
+- (BOOL)isDirectVoteForImaTakuvNarod:(double)voteProbabilty{
+    double directVoteChance = 0.10;
+    return voteProbabilty < directVoteChance;
 }
 
 - (void) scrollToImaTakuvNarod:(UITableView*)tableView {
@@ -216,11 +202,7 @@
 }
 
 - (void)didVoteForPartyWithNumber:(int)partyNumber {
-    int invalidPartyNumber = -1;
-    
-    if (partyNumber != invalidPartyNumber) {
-        [self voteForPartyWithNumber:partyNumber];
-    }
+    [self voteForPartyWithNumber:partyNumber];
 }
 
 /*
