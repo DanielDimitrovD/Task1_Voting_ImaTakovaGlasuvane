@@ -88,7 +88,6 @@
     UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault
        handler:^(UIAlertAction *action) {}];
     
-    
     UIAlertAction *declineAction = [UIAlertAction actionWithTitle:@"Decline" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         exit(0);
     }];
