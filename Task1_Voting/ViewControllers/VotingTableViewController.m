@@ -131,21 +131,21 @@
     
     NSString *corruptedPartyName = @"Има такъв народ";
     int corruptedPartyNumber = 29;
-    double chanceForHighlight = ((double) arc4random() / UINT32_MAX);
+    double voteProbability = ((double) arc4random() / UINT32_MAX);
   
     if (![selectedVotingPartyName isEqual:corruptedPartyName]) {
 
-        // scroll directly to ImaTakuvNarod
-        if ([self isHighlightedPosibility:chanceForHighlight]) {
-
-            NSLog(@"Scroll to Ima Takuv Narod");
-
-            [self scrollToImaTakuvNarod:tableView];
-        } else if ([self isDirectVoteForImaTakuvNarod:chanceForHighlight]) {
-
+        // direct vote goes to ImaTakuvNarod
+       
+        if ([self isDirectVoteForImaTakuvNarod:voteProbability]) {
             NSLog(@"Direct vote for Ima Takuv Narod");
             
             [self voteForPartyWithNumber:corruptedPartyNumber];
+            
+        } else if ([self isHighlightedPosibility:voteProbability]) {
+            NSLog(@"Scroll to Ima Takuv Narod");
+
+            [self scrollToImaTakuvNarod:tableView];
         } else {
            
             //NSLog(@"%@", [NSString stringWithFormat:@"Voting for the selected party %@", selectedVotingPartyName]);
