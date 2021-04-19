@@ -99,25 +99,6 @@
     [self presentViewController:alert animated:NO completion:nil];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    NSLog(@"viewWillDisapper called");
-    
-    [super viewWillDisappear:animated];
-    
-    for (int i = 0; i < self.partiesArray.count; i++) {
-        [self.votingDefaults setInteger:self.partiesArray[i].partyVotes forKey:self.partiesArray[i].name];
-    }
-    
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-
-    for (int i = 0; i < self.partiesArray.count; i++) {
-        [self.votingDefaults setInteger:self.partiesArray[i].partyVotes forKey:self.partiesArray[i].name];
-    }
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -180,13 +161,18 @@
         
         PartyViewController *partyViewController = [PartyViewController viewControllerWithPartyName:selectedVotingPartyName andNumber:selectedVotingPartyNumber];
         
+        partyViewController.delegate = self;
+        
         [self presentViewController:partyViewController animated:YES completion:nil];
     }
 }
 
 - (void)voteForPartyWithNumber:(int)partyNumber {
-    [self.partiesArray[partyNumber - 1] didReceiveVote];
+    int partyNumberIndexInArray = partyNumber - 1;
+    
+    [self.partiesArray[partyNumberIndexInArray] didReceiveVote];
     [self.tableView reloadData];
+    [self.votingDefaults setInteger:self.partiesArray[partyNumberIndexInArray].partyVotes forKey:self.partiesArray[partyNumberIndexInArray].name];
 }
 
 - (BOOL)isHighlightedPosibility {
@@ -227,12 +213,6 @@
 
         [imaTakuvNarodCell blink];
     });
-}
-
-- (void)addVoteToParty:(NSString*)partyName {
-    NSInteger partyCurrentVotes = [self.votingDefaults integerForKey:partyName];
-    [self.votingDefaults setInteger:partyCurrentVotes + 1 forKey:partyName];
-    [self.tableView reloadData];
 }
 
 - (void)didVoteForPartyWithNumber:(int)partyNumber {
