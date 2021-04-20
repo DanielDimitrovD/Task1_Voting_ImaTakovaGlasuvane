@@ -12,7 +12,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface VotingTableViewController : UITableViewController <PartyViewControllerDelegate>
--(void)voteForPartyWithNumber:(int)partyNumber;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *languageSettingsButtonItem;
+- (IBAction)languageSwitchButtonTap:(id)sender;
+- (void)voteForPartyWithNumber:(int)partyNumber;
 @end
 
 NS_ASSUME_NONNULL_END

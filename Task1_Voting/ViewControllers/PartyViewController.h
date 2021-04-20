@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIImageView *partyImageView;
 @property (weak, nonatomic) IBOutlet UILabel *partyNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *partyNumberLabel;
+@property (weak, nonatomic) IBOutlet UIButton *voteButton;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 // delegate a property
 @property (nonatomic, weak) id <PartyViewControllerDelegate> partyViewControllerDelegate;

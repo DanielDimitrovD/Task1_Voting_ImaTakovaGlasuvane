@@ -7,13 +7,12 @@
 
 #import "VotingTableViewController.h"
 #import "PartyViewController.h"
+#import "LanguageDictionary.h"
 
 @interface PartyViewController ()
-
 @property(strong, nonatomic) NSString *partyName;
 @property(strong, nonatomic) UIImage *partyImage;
 @property(assign, nonatomic) int partyNumber;
-
 @end
 
 @implementation PartyViewController
@@ -25,6 +24,19 @@
     self.partyImageView.image = self.partyImage;
     self.partyNameLabel.text = self.partyName;
     self.partyNumberLabel.text = [NSString stringWithFormat:@"%d", self.partyNumber];
+    
+    
+    LanguageDictionary *sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
+    NSString *currentLanguage = sharedLanguageDictionary.sharedLanguageSettings;
+    
+    if (![currentLanguage isEqual:@"English"]) {
+    
+        NSString *voteButtonText = sharedLanguageDictionary.sharedInstance[currentLanguage][@"Vote"];
+        NSString *backButtonText = sharedLanguageDictionary.sharedInstance[currentLanguage][@"Back"];
+        
+        [self.voteButton setTitle:voteButtonText forState:UIControlStateNormal];
+        [self.backButton setTitle:backButtonText forState:UIControlStateNormal];
+    }
 }
 
 + (instancetype)viewControllerWithPartyName:(NSString *)partyName andNumber:(int)partyNumber {

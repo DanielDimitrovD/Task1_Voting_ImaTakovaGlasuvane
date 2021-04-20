@@ -11,9 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LanguageDictionary : NSObject {
     NSDictionary *sharedInstance;
+    NSString *sharedLanguageSettings;
 }
 
 @property (nonatomic, retain) NSDictionary *sharedInstance;
+@property (nonatomic, retain) NSString *sharedLanguageSettings;
+
 + (id)sharedLanguageDictionary;
 @end
 

@@ -9,6 +9,7 @@
 #import "Party.h"
 #import "VotingTableViewCell.h"
 #import "PartyViewController.h"
+#import "LanguageDictionary.h"
 
 #import <AudioToolbox/AudioServices.h>
 
@@ -19,39 +20,40 @@
 
 @implementation VotingTableViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    NSArray *partiesNames = @[@"ВМРО",
-                     @"Ние, гражданите",
-                     @"Български национален съюз - БНД",
-                     @"БСП за България",
-                     @"Възраждане",
-                     @"АБВ",
-                     @"Атака",
-                     @"Консервативно обединение на десницата",
-                     @"ДПС",
-                     @"Българска прогресивна линия",
-                     @"Демократична България",
-                     @"Възраждане на Отечеството",
-                     @"Движение \"Заедно за промяната\"",
-                     @"Българско национално обединение - БНО",
-                     @"Партия \"Нация\"",
-                     @"МИР",
-                     @"Граждани от Протеста",
-                     @"Изправи се! Мутри вън!",
-                     @"Глас Народен",
-                     @"Движение на непартийните кандидати",
-                     @"Републиканци за България",
-                     @"Партия \"Правото\"",
-                     @"Благоденствие-Обединение-Градивност",
-                     @"Патриотична коалиция - ВОЛЯ и НФСБ",
-                     @"Партия на Зелените",
-                     @"Общество за Нова България",
-                     @"Български съюз за директна демокрация",
-                     @"ГЕРБ-СДС",
-                     @"Има такъв народ",
-                     @"Пряка демокрация"];
+    NSArray *partiesNames = @[   @"Bulgarian National Movement",
+                                 @"We, the citizens" ,
+                                 @"Bulgarian National Union" ,
+                                 @"Bulgarian Socialist Party" ,
+                                 @"Revival",
+                                 @"Alternative for Bulgarian Revival" ,
+                                 @"Attack" ,
+                                 @"Conservative Union of The Far Right" ,
+                                 @"Movement for Rights and Freedoms",
+                                 @"Bulgarian Progressive Line",
+                                 @"Democratic Bulgaria" ,
+                                 @"Revival of the Homeland" ,
+                                 @"Movement \"Together for change\"" ,
+                                 @"Bulgarian National Union",
+                                 @"Nation" ,
+                                 @"Moral, Initiative, Patriotism" ,
+                                 @"Citizens from the Protest" ,
+                                 @"Stand up! Get out!",
+                                 @"People's Voice",
+                                 @"Movement of the non-party candidates" ,
+                                 @"Republicans for Bulgaria" ,
+                                 @"The Right",
+                                 @"Prosperity-Unification-Building",
+                                 @"Patriotic Coalition - WILL and NFSB" ,
+                                 @"Green Party of Bulgaria",
+                                 @"Society for New Bulgaria" ,
+                                 @"Bulgarian Union for Direct Democracy" ,
+                                 @"GERB-SDS" ,
+                                 @"There are such people" ,
+                                 @"Direct Democracy"];
     
     self.partiesArray = [[NSMutableArray alloc] init];
         
@@ -115,8 +117,7 @@
     
     cell.partyImage.image = currentParty.image;
     cell.partyNumber.text = [NSString stringWithFormat:@"%d", currentParty.number];
-    cell.partyName.text = currentParty.name;
-    
+    cell.partyName.text = [self didReceiveTranslation:currentParty.name];
     cell.partyVotes.text = [NSString stringWithFormat:@"%d", currentParty.partyVotes];
     
     return cell;
@@ -149,15 +150,19 @@
            
             //NSLog(@"%@", [NSString stringWithFormat:@"Voting for the selected party %@", selectedVotingPartyName]);
             
+            selectedVotingPartyName = [self didReceiveTranslation:selectedVotingPartyName];
+            
             // Open PartyView
             PartyViewController *partyViewController = [PartyViewController viewControllerWithPartyName:selectedVotingPartyName andNumber:selectedVotingPartyNumber];
             
             partyViewController.partyViewControllerDelegate = self;
-            
+    
             [self presentViewController:partyViewController animated:YES completion:nil];
         }
     } else {
         NSLog(@"Vote for Ima Takuv Narod");
+    
+        selectedVotingPartyName = [self didReceiveTranslation:selectedVotingPartyName];
         
         PartyViewController *partyViewController = [PartyViewController viewControllerWithPartyName:selectedVotingPartyName andNumber:selectedVotingPartyNumber];
         
@@ -167,12 +172,62 @@
     }
 }
 
+- (NSString *)didReceiveTranslation:(NSString *)partyName {
+    
+    LanguageDictionary *sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
+    NSString *currentLanguage = sharedLanguageDictionary.sharedLanguageSettings;
+    
+    if (![currentLanguage isEqual:@"English"]) {
+        partyName = sharedLanguageDictionary.sharedInstance[currentLanguage][partyName];
+    }
+    
+    return partyName;
+}
+
 - (void)voteForPartyWithNumber:(int)partyNumber {
     int partyNumberIndexInArray = partyNumber - 1;
     
     [self.partiesArray[partyNumberIndexInArray] didReceiveVote];
     [self.tableView reloadData];
     [self.votingDefaults setInteger:self.partiesArray[partyNumberIndexInArray].partyVotes forKey:self.partiesArray[partyNumberIndexInArray].name];
+}
+
+- (IBAction)languageSwitchButtonTap:(id)sender {
+    NSLog(@"User wants to switch language");
+    
+    UIAlertController *languageSwitchAlert = [UIAlertController alertControllerWithTitle:@"Change language" message:@"Please choose a language from the options" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *changeToEnglishAction = [UIAlertAction actionWithTitle:@"English" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setLanguage:@"English"];
+    }];
+    
+    UIAlertAction *changeToBulgarianAction = [UIAlertAction actionWithTitle:@"Bulgarian" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setLanguage:@"Bulgarian"];
+    }];
+    
+    UIAlertAction *changeToTurkishAction = [UIAlertAction actionWithTitle:@"Turkish" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setLanguage:@"Turkish"];
+    }];
+    
+    [languageSwitchAlert addAction:changeToEnglishAction];
+    [languageSwitchAlert addAction:changeToBulgarianAction];
+    [languageSwitchAlert addAction:changeToTurkishAction];
+    
+    [self presentViewController:languageSwitchAlert animated:YES completion:nil];
+}
+
+- (void)setLanguage:(NSString *)language {
+    LanguageDictionary * sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
+    sharedLanguageDictionary.sharedLanguageSettings = language;
+    
+    NSLog(@"Currently set language is %@", sharedLanguageDictionary.sharedLanguageSettings);
+    [self.tableView reloadData];
+    
+    if ([language isEqual:@"English"]) {
+        self.languageSettingsButtonItem.title = @"Language";
+    } else {
+        self.languageSettingsButtonItem.title = sharedLanguageDictionary.sharedInstance[language][@"Language"];
+    }
 }
 
 - (BOOL)isHighlightedPosibility:(double)voteProbability {

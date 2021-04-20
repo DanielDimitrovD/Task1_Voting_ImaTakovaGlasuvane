@@ -10,6 +10,7 @@
 @implementation LanguageDictionary
 
 @synthesize sharedInstance;
+@synthesize sharedLanguageSettings;
 
 + (id)sharedLanguageDictionary {
     static LanguageDictionary *sharedLanguageDictionary = nil;
@@ -24,11 +25,11 @@
 }
 
 - (id)init {
-    if (self == [super init]) {
-        NSDictionary *languageDictionary = @{
-            @"bg" : @{
+    if (self = [super init]) {
+         sharedInstance = @{
+            @"Bulgarian" : @{
                     @"Bulgarian National Movement" : @"ВМРО",
-                    @"We the citizens" : @"Ние, гражданите",
+                    @"We, the citizens" : @"Ние, гражданите",
                     @"Bulgarian National Union" : @"Български национален съюз - БНД" ,
                     @"Bulgarian Socialist Party" : @"БСП за България" ,
                     @"Revival" : @"Възраждане" ,
@@ -63,7 +64,7 @@
                     @"Back" : @"Назад",
                     @"Language" : @"Език"
             } ,
-            @"tur" : @{
+            @"Turkish" : @{
                     @"Bulgarian National Movement" : @"Bulgar ulusal hareketi",
                     @"We, the citizens" : @"Biz vatandaşlar",
                     @"Bulgarian National Union" : @"Bulgar Ulusal Birliği" ,
@@ -100,9 +101,11 @@
                     @"Back" : @"Geri",
                     @"Language" : @"Dil"
             },
-            @"language" : @"eng"
         };
     }
+    
+    self.sharedLanguageSettings = @"English";
+    
     return self;
 }
 
