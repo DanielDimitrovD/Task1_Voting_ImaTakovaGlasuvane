@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E77350D262EB0D100C123BC /* LanguageDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E77350C262EB0D100C123BC /* LanguageDictionary.m */; };
 		8EB8045B2626CC48006E371B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB8045A2626CC48006E371B /* AppDelegate.m */; };
 		8EB8045E2626CC48006E371B /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB8045D2626CC48006E371B /* SceneDelegate.m */; };
 		8EB804662626CC49006E371B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8EB804652626CC49006E371B /* Assets.xcassets */; };
@@ -20,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8E77350B262EB0D100C123BC /* LanguageDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LanguageDictionary.h; sourceTree = "<group>"; };
+		8E77350C262EB0D100C123BC /* LanguageDictionary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LanguageDictionary.m; sourceTree = "<group>"; };
 		8EB804562626CC48006E371B /* Task1_Voting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Task1_Voting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EB804592626CC48006E371B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8EB8045A2626CC48006E371B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -90,6 +93,8 @@
 			children = (
 				8EB804A726285158006E371B /* Party.h */,
 				8EB804A826285158006E371B /* Party.m */,
+				8E77350B262EB0D100C123BC /* LanguageDictionary.h */,
+				8E77350C262EB0D100C123BC /* LanguageDictionary.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -185,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EB804A426284210006E371B /* VotingTableViewCell.m in Sources */,
+				8E77350D262EB0D100C123BC /* LanguageDictionary.m in Sources */,
 				8EB8045B2626CC48006E371B /* AppDelegate.m in Sources */,
 				8EB8046C2626CC49006E371B /* main.m in Sources */,
 				8EB8045E2626CC48006E371B /* SceneDelegate.m in Sources */,
