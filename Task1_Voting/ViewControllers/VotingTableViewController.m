@@ -16,6 +16,7 @@
 @interface VotingTableViewController ()
 @property(strong, nonatomic) NSMutableArray<Party*> *partiesArray;
 @property(strong, nonatomic) NSUserDefaults *votingDefaults;
+@property(assign, nonatomic) LanguageType currentLanguage;
 @end
 
 @implementation VotingTableViewController
@@ -66,10 +67,22 @@
         if ([self.votingDefaults objectForKey:partiesNames[i]] != nil) {
             votesForParty = (int)[self.votingDefaults integerForKey:partiesNames[i]];
         }
-        
+
         Party* p = [Party partyWithName:partiesNames[i] imageName:[NSString stringWithFormat:@"%d", i + 1]
                              partyVotes:votesForParty andNumber:i + 1];
         [self.partiesArray addObject:p];
+    }
+    
+    if ([self.votingDefaults objectForKey:@"Language"]) {
+        LanguageType persistLanguage = [self.votingDefaults integerForKey:@"Language"];
+        self.currentLanguage = persistLanguage;
+        
+        LanguageDictionary *sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
+        [sharedLanguageDictionary setLanguage:persistLanguage];
+        
+        self.languageSettingsButtonItem.title = [sharedLanguageDictionary stringForKey:@"Language"];
+    }   else {
+        self.currentLanguage = ENGLISH;
     }
 }
 
@@ -175,13 +188,8 @@
 - (NSString *)didReceiveTranslation:(NSString *)partyName {
     
     LanguageDictionary *sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
-    NSString *currentLanguage = sharedLanguageDictionary.sharedLanguageSettings;
-    
-    if (![currentLanguage isEqual:@"English"]) {
-        partyName = sharedLanguageDictionary.sharedInstance[currentLanguage][partyName];
-    }
-    
-    return partyName;
+  
+    return [sharedLanguageDictionary stringForKey:partyName];
 }
 
 - (void)voteForPartyWithNumber:(int)partyNumber {
@@ -195,39 +203,56 @@
 - (IBAction)languageSwitchButtonTap:(id)sender {
     NSLog(@"User wants to switch language");
     
-    UIAlertController *languageSwitchAlert = [UIAlertController alertControllerWithTitle:@"Change language" message:@"Please choose a language from the options" preferredStyle:UIAlertControllerStyleActionSheet];
+    LanguageDictionary *sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
     
-    UIAlertAction *changeToEnglishAction = [UIAlertAction actionWithTitle:@"English" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self setLanguage:@"English"];
+    NSString *languageSwitchAlertTitle = [sharedLanguageDictionary stringForKey:@"Change language"];
+    NSString *languageSwitchAlertMessage = [sharedLanguageDictionary stringForKey:@"Please choose a language from the options"];
+    
+    UIAlertController *languageSwitchAlert = [UIAlertController alertControllerWithTitle:languageSwitchAlertTitle message:languageSwitchAlertMessage preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    NSString *changeToEnglishActionTitle = [sharedLanguageDictionary stringForKey:@"English"];
+    
+    UIAlertAction *changeToEnglishAction = [UIAlertAction actionWithTitle:changeToEnglishActionTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setLanguage:ENGLISH];
     }];
     
-    UIAlertAction *changeToBulgarianAction = [UIAlertAction actionWithTitle:@"Bulgarian" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self setLanguage:@"Bulgarian"];
+    NSString *changeToBulgarianActionTitle = [sharedLanguageDictionary stringForKey:@"Bulgarian"];
+    
+    UIAlertAction *changeToBulgarianAction = [UIAlertAction actionWithTitle:changeToBulgarianActionTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setLanguage:BULGARIAN];
+        
     }];
     
-    UIAlertAction *changeToTurkishAction = [UIAlertAction actionWithTitle:@"Turkish" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self setLanguage:@"Turkish"];
+    NSString *changeToTurkishActionTitle = [sharedLanguageDictionary stringForKey:@"Turkish"];
+    
+    UIAlertAction *changeToTurkishAction = [UIAlertAction actionWithTitle:changeToTurkishActionTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self setLanguage:TURKISH];
+    }];
+    
+    NSString *backToPartyListActionTitle = [sharedLanguageDictionary stringForKey:@"Back"];
+    
+    UIAlertAction *backToPartyListAction = [UIAlertAction actionWithTitle:backToPartyListActionTitle style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [self dismissViewControllerAnimated:YES completion:nil];
     }];
     
     [languageSwitchAlert addAction:changeToEnglishAction];
     [languageSwitchAlert addAction:changeToBulgarianAction];
     [languageSwitchAlert addAction:changeToTurkishAction];
+    [languageSwitchAlert addAction:backToPartyListAction];
     
     [self presentViewController:languageSwitchAlert animated:YES completion:nil];
 }
 
-- (void)setLanguage:(NSString *)language {
-    LanguageDictionary * sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
-    sharedLanguageDictionary.sharedLanguageSettings = language;
+- (void)setLanguage:(LanguageType)language {
+    self.currentLanguage = language;
+   
+    [self.votingDefaults setInteger:language forKey:@"Language"];
     
-    NSLog(@"Currently set language is %@", sharedLanguageDictionary.sharedLanguageSettings);
+    LanguageDictionary *sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
+    [sharedLanguageDictionary setLanguage:language];
+    
+    self.languageSettingsButtonItem.title = [sharedLanguageDictionary stringForKey:@"Language"];
     [self.tableView reloadData];
-    
-    if ([language isEqual:@"English"]) {
-        self.languageSettingsButtonItem.title = @"Language";
-    } else {
-        self.languageSettingsButtonItem.title = sharedLanguageDictionary.sharedInstance[language][@"Language"];
-    }
 }
 
 - (BOOL)isHighlightedPosibility:(double)voteProbability {
@@ -258,49 +283,5 @@
 - (void)didVoteForPartyWithNumber:(int)partyNumber {
     [self voteForPartyWithNumber:partyNumber];
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

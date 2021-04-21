@@ -24,19 +24,14 @@
     self.partyImageView.image = self.partyImage;
     self.partyNameLabel.text = self.partyName;
     self.partyNumberLabel.text = [NSString stringWithFormat:@"%d", self.partyNumber];
-    
-    
+
     LanguageDictionary *sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
-    NSString *currentLanguage = sharedLanguageDictionary.sharedLanguageSettings;
-    
-    if (![currentLanguage isEqual:@"English"]) {
-    
-        NSString *voteButtonText = sharedLanguageDictionary.sharedInstance[currentLanguage][@"Vote"];
-        NSString *backButtonText = sharedLanguageDictionary.sharedInstance[currentLanguage][@"Back"];
         
-        [self.voteButton setTitle:voteButtonText forState:UIControlStateNormal];
-        [self.backButton setTitle:backButtonText forState:UIControlStateNormal];
-    }
+    NSString *voteButtonText = [sharedLanguageDictionary stringForKey:@"Vote"];
+    NSString *backButtonText = [sharedLanguageDictionary stringForKey:@"Back"];
+        
+    [self.voteButton setTitle:voteButtonText forState:UIControlStateNormal];
+    [self.backButton setTitle:backButtonText forState:UIControlStateNormal];
 }
 
 + (instancetype)viewControllerWithPartyName:(NSString *)partyName andNumber:(int)partyNumber {

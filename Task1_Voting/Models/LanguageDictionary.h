@@ -9,15 +9,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LanguageDictionary : NSObject {
-    NSDictionary *sharedInstance;
-    NSString *sharedLanguageSettings;
-}
+typedef NS_ENUM(NSInteger, LanguageType) {
+    ENGLISH = 0,
+    BULGARIAN = 1,
+    TURKISH = 2
+};
 
-@property (nonatomic, retain) NSDictionary *sharedInstance;
-@property (nonatomic, retain) NSString *sharedLanguageSettings;
-
-+ (id)sharedLanguageDictionary;
+@interface LanguageDictionary : NSObject
++ (instancetype)sharedLanguageDictionary;
+- (NSString *)stringForKey:(NSString *)englishWord;
+- (void)setLanguage:(LanguageType)language;
 @end
 
 NS_ASSUME_NONNULL_END
