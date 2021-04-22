@@ -10,19 +10,18 @@
 @interface LanguageDictionary()
 @property (strong, nonatomic) NSDictionary *bulgarianTranslationDictionary;
 @property (strong, nonatomic) NSDictionary *turkishTranslationDictionary;
-@property (assign, nonatomic) LanguageType currentLanguage;
+@property (assign, nonatomic) EnumLanguage currentLanguage;
 @end
 
 @implementation LanguageDictionary
 
 + (instancetype)sharedLanguageDictionary {
     static LanguageDictionary *sharedLanguageDictionary = nil;
+    static dispatch_once_t onceToken;
     
-    @synchronized (self) {
-        if (sharedLanguageDictionary == nil) {
-            sharedLanguageDictionary = [[LanguageDictionary alloc] init];
-        }
-    }
+    dispatch_once(&onceToken, ^{
+      sharedLanguageDictionary = [[self alloc] init];
+    });
     
     return sharedLanguageDictionary;
 }
@@ -70,9 +69,9 @@
                                 @"Please choose a language from the options" : @"Моля изберете език от наличните" ,
                                 @"English" : @"Английски" ,
                                 @"Bulgarian" : @"Български" ,
-                                @"Turkish" : @"Турски"
-                                
-                                
+                                @"Turkish" : @"Турски",
+                                @"Legal voting confirmation" : @"Потвърждение за навършено пълнолетие",
+                                @"Confirm that you are atleast 18 years old to vote!" : @"Потвърдете, че сте навършили 18 години за да може да гласувате!"
         };
         
         self.turkishTranslationDictionary = @{
@@ -115,10 +114,12 @@
                                 @"Please choose a language from the options" : @"Lütfen seçeneklerden bir dil seçin" ,
                                 @"English" : @"İngilizce" ,
                                 @"Bulgarian" : @"Bulgarca" ,
-                                @"Turkish" : @"Türk"
+                                @"Turkish" : @"Türk",
+                                @"Legal voting confirmation" : @"Yasal oylama onayı",
+                                @"Confirm that you are atleast 18 years old to vote!" : @"Oy vermek için en az 18 yaşında olduğunuzu onaylayın!"
         };
         
-        self.currentLanguage = ENGLISH;
+        self.currentLanguage = EnumLanguageEnglish;
     }
     
     return self;
@@ -126,16 +127,16 @@
 
 - (NSString *)stringForKey:(NSString *)englishWord {
     
-    if (self.currentLanguage == BULGARIAN) {
+    if (self.currentLanguage == EnumLanguageBulgarian) {
         return self.bulgarianTranslationDictionary[englishWord];
-    } else if (self.currentLanguage == TURKISH) {
+    } else if (self.currentLanguage == EnumLanguageTurkish) {
         return self.turkishTranslationDictionary[englishWord];
     } else {
         return englishWord;
     }
 }
 
-- (void)setLanguage:(LanguageType)language {
+- (void)setLanguage:(EnumLanguage)language {
     self.currentLanguage = language;
 }
 

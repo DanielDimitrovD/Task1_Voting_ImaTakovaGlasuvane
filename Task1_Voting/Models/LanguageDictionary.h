@@ -9,16 +9,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, LanguageType) {
-    ENGLISH = 0,
-    BULGARIAN = 1,
-    TURKISH = 2
-};
+typedef enum : NSInteger {
+    EnumLanguageBulgarian,
+    EnumLanguageEnglish,
+    EnumLanguageTurkish
+} EnumLanguage;
 
 @interface LanguageDictionary : NSObject
 + (instancetype)sharedLanguageDictionary;
 - (NSString *)stringForKey:(NSString *)englishWord;
-- (void)setLanguage:(LanguageType)language;
+- (void)setLanguage:(EnumLanguage)language;
 @end
 
 NS_ASSUME_NONNULL_END

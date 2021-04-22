@@ -15,8 +15,7 @@
 
 @interface VotingTableViewController ()
 @property(strong, nonatomic) NSMutableArray<Party*> *partiesArray;
-@property(strong, nonatomic) NSUserDefaults *votingDefaults;
-@property(assign, nonatomic) LanguageType currentLanguage;
+@property(assign, nonatomic) EnumLanguage currentLanguage;
 @end
 
 @implementation VotingTableViewController
@@ -57,15 +56,15 @@
                                  @"Direct Democracy"];
     
     self.partiesArray = [[NSMutableArray alloc] init];
-        
-    self.votingDefaults = [NSUserDefaults standardUserDefaults];
+    
+    NSUserDefaults *votingDefaults = [NSUserDefaults standardUserDefaults];
     
     for (int i = 0; i < partiesNames.count; i++) {
         
         int votesForParty = 0;
         
-        if ([self.votingDefaults objectForKey:partiesNames[i]] != nil) {
-            votesForParty = (int)[self.votingDefaults integerForKey:partiesNames[i]];
+        if ([votingDefaults objectForKey:partiesNames[i]] != nil) {
+            votesForParty = (int)[votingDefaults integerForKey:partiesNames[i]];
         }
 
         Party* p = [Party partyWithName:partiesNames[i] imageName:[NSString stringWithFormat:@"%d", i + 1]
@@ -73,8 +72,11 @@
         [self.partiesArray addObject:p];
     }
     
-    if ([self.votingDefaults objectForKey:@"Language"]) {
-        LanguageType persistLanguage = [self.votingDefaults integerForKey:@"Language"];
+    if ([votingDefaults objectForKey:@"Language"]) {
+        
+        NSUserDefaults *votingDefaults = [NSUserDefaults standardUserDefaults];
+        
+        EnumLanguage persistLanguage = [votingDefaults integerForKey:@"Language"];
         self.currentLanguage = persistLanguage;
         
         LanguageDictionary *sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
@@ -82,7 +84,7 @@
         
         self.languageSettingsButtonItem.title = [sharedLanguageDictionary stringForKey:@"Language"];
     }   else {
-        self.currentLanguage = ENGLISH;
+        self.currentLanguage = EnumLanguageEnglish;
     }
 }
 
@@ -95,15 +97,29 @@
 }
 
 - (void)showAgeConfirmationAlert{
+
+    LanguageDictionary *sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Legal voting confirmation"
-                                message:@"Confirm that you are atleast 18 years old to vote!"
-                                preferredStyle:UIAlertControllerStyleAlert];
+    NSString *legalVotingConfirmationAlertTitle =
+    [sharedLanguageDictionary stringForKey:@"Legal voting confirmation"];
     
-    UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault
-       handler:^(UIAlertAction *action) {}];
+    NSString *legalVotingConfirmationAlertMessage =
+    [sharedLanguageDictionary stringForKey:@"Confirm that you are atleast 18 years old to vote!"];
     
-    UIAlertAction *declineAction = [UIAlertAction actionWithTitle:@"Decline" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:legalVotingConfirmationAlertTitle                                     message:legalVotingConfirmationAlertMessage
+                               preferredStyle:UIAlertControllerStyleAlert];
+    
+    NSString *acceptActionTitle = [sharedLanguageDictionary stringForKey:@"Accept"];
+        
+    UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:acceptActionTitle
+    style:UIAlertActionStyleDefault
+    handler:^(UIAlertAction *action) {}];
+    
+    NSString *declineActionTitle = [sharedLanguageDictionary stringForKey:@"Decline"];
+    
+    UIAlertAction *declineAction = [UIAlertAction actionWithTitle:declineActionTitle
+    style:UIAlertActionStyleDestructive
+    handler:^(UIAlertAction *action) {
         exit(0);
     }];
 
@@ -197,7 +213,10 @@
     
     [self.partiesArray[partyNumberIndexInArray] didReceiveVote];
     [self.tableView reloadData];
-    [self.votingDefaults setInteger:self.partiesArray[partyNumberIndexInArray].partyVotes forKey:self.partiesArray[partyNumberIndexInArray].name];
+    
+    NSUserDefaults *votingDefaults = [NSUserDefaults standardUserDefaults];
+    
+    [votingDefaults setInteger:self.partiesArray[partyNumberIndexInArray].partyVotes forKey:self.partiesArray[partyNumberIndexInArray].name];
 }
 
 - (IBAction)languageSwitchButtonTap:(id)sender {
@@ -206,27 +225,28 @@
     LanguageDictionary *sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
     
     NSString *languageSwitchAlertTitle = [sharedLanguageDictionary stringForKey:@"Change language"];
-    NSString *languageSwitchAlertMessage = [sharedLanguageDictionary stringForKey:@"Please choose a language from the options"];
+    NSString *languageSwitchAlertMessage = [sharedLanguageDictionary
+                                            stringForKey:@"Please choose a language from the options"];
     
     UIAlertController *languageSwitchAlert = [UIAlertController alertControllerWithTitle:languageSwitchAlertTitle message:languageSwitchAlertMessage preferredStyle:UIAlertControllerStyleActionSheet];
     
-    NSString *changeToEnglishActionTitle = [sharedLanguageDictionary stringForKey:@"English"];
+    NSString *changeToEnglishActionTitle = @"English";
     
     UIAlertAction *changeToEnglishAction = [UIAlertAction actionWithTitle:changeToEnglishActionTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self setLanguage:ENGLISH];
+        [self setLanguage:EnumLanguageEnglish];
     }];
     
-    NSString *changeToBulgarianActionTitle = [sharedLanguageDictionary stringForKey:@"Bulgarian"];
+    NSString *changeToBulgarianActionTitle = @"Български";
     
     UIAlertAction *changeToBulgarianAction = [UIAlertAction actionWithTitle:changeToBulgarianActionTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self setLanguage:BULGARIAN];
+        [self setLanguage:EnumLanguageBulgarian];
         
     }];
     
-    NSString *changeToTurkishActionTitle = [sharedLanguageDictionary stringForKey:@"Turkish"];
+    NSString *changeToTurkishActionTitle = @"Türk";
     
     UIAlertAction *changeToTurkishAction = [UIAlertAction actionWithTitle:changeToTurkishActionTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [self setLanguage:TURKISH];
+        [self setLanguage:EnumLanguageTurkish];
     }];
     
     NSString *backToPartyListActionTitle = [sharedLanguageDictionary stringForKey:@"Back"];
@@ -243,10 +263,13 @@
     [self presentViewController:languageSwitchAlert animated:YES completion:nil];
 }
 
-- (void)setLanguage:(LanguageType)language {
+- (void)setLanguage:(EnumLanguage)language {
     self.currentLanguage = language;
    
-    [self.votingDefaults setInteger:language forKey:@"Language"];
+    
+    NSUserDefaults *votingDefaults = [NSUserDefaults standardUserDefaults];
+    
+    [votingDefaults setInteger:language forKey:@"Language"];
     
     LanguageDictionary *sharedLanguageDictionary = [LanguageDictionary sharedLanguageDictionary];
     [sharedLanguageDictionary setLanguage:language];
